@@ -14,8 +14,8 @@
 </head>
 <body>
     <p id="output"></p>
-    <div id="google_translate_element"></div>
-    <script>
+    <div id="google_translate_element" style="display:none;"></div>
+    <script type="text/javascript">
         function _UrlHasParameter(stringInput) {
             let parameters = (new URL(window.location)).searchParams;
             return parameters.has(stringInput);
@@ -44,13 +44,18 @@
             return {};
         }
 
-        const { text, language } = getParameters();
-        document.getElementById("output").innerHTML = text;
-
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({pageLanguage: language, includedLanguages: language, defaultLanguage: language}, 'google_translate_element');
         }
+
+        window.onload = function() {
+            const googleTranslateScript = document.createElement('script');
+            googleTranslateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=${language}`;
+            document.body.appendChild(googleTranslateScript);
+        };
+        
+        const { text, language } = getParameters();
+        document.getElementById("output").innerHTML = text;
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
