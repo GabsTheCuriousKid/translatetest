@@ -45,17 +45,23 @@
         }
 
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: language, includedLanguages: language, defaultLanguage: language}, 'google_translate_element');
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: language,
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
         }
 
         window.onload = function() {
-            const googleTranslateScript = document.createElement('script');
-            googleTranslateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=${language}`;
-            document.body.appendChild(googleTranslateScript);
+            const { text, language } = getParameters();
+            document.getElementById("output").innerHTML = text;
+
+            if (language) {
+                const googleTranslateScript = document.createElement('script');
+                googleTranslateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=${language}`;
+                document.body.appendChild(googleTranslateScript);
+            }
         };
-        
-        const { text, language } = getParameters();
-        document.getElementById("output").innerHTML = text;
     </script>
 </body>
 </html>
