@@ -45,7 +45,9 @@
             if (_checkIf === true) {
                 const text = getParameterByName("text")
                 const language = getParameterByName("language")
+                return {text, language};
             }
+            return {};
         }
 
         const {text, language} = getParameters();
