@@ -30,7 +30,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             if (text) {
-                document.getElementById("output").innerHTML = text; // Display the text
+                document.getElementById("output").innerHTML = text + ". encoded version:" + encodeURIComponent(text);
             } else {
                 document.getElementById("output").innerHTML = "No text provided.";
             }
