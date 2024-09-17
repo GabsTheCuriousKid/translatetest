@@ -13,8 +13,8 @@
     </style>
 </head>
 <body>
-    <h1>Test</h1>
     <p id="output"></p>
+    <div id="google_translate_element"></div>
     <script>
         function _UrlHasParameter(stringInput) {
             let parameters = (new URL(window.location)).searchParams;
@@ -45,7 +45,12 @@
         }
 
         const { text, language } = getParameters();
-        document.getElementById("output").innerHTML = "The text is: " + text + ", the language is " + language + ".";
+        document.getElementById("output").innerHTML = text;
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: language, includedLanguages: 'zh-CN,cs,da,nl,en,et,fr,de,es'}, 'google_translate_element');
+        }
     </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
