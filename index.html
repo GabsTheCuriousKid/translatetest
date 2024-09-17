@@ -39,10 +39,12 @@
             if (_checkIf()) {
                 const text = getParameterByName("text");
                 const language = getParameterByName("language");
-                return {text, language};
+                return { text, language };
             }
             return {};
         }
+
+        const { text, language } = getParameters();
 
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -50,20 +52,25 @@
                 includedLanguages: language,
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
-        }
-
-        window.onload = function() {
-            const { text, language } = getParameters();
-            document.getElementById("output").innerHTML = text;
 
             if (language) {
-                const googleTranslateScript = document.createElement('script');
-                googleTranslateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit&tl=${language}`;
-                document.body.appendChild(googleTranslateScript);
-            } else {
-                console.error("Language parameter is missing.");
+                const translate = new google.translate.TranslateElement();
+                translate.translatePage(language);
             }
-        };
+        }
+
+        const googleTranslateScript = document.createElement('script');
+        googleTranslateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
+        document.body.appendChild(googleTranslateScript);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (text) {
+                document.getElementById("output").innerHTML = text;
+            } else {
+                document.getElementById("output").innerHTML = "undefined";
+                console.error("Parameter Error: No Text parameter.");
+            }
+        });
     </script>
 </body>
 </html>
