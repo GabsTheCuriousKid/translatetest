@@ -14,13 +14,7 @@
 </head>
 <body>
     <p id="output"></p>
-    <div id="google_translate_element" style="display:none;"></div>
     <script type="text/javascript">
-        function _UrlHasParameter(stringInput) {
-            let parameters = (new URL(window.location)).searchParams;
-            return parameters.has(stringInput);
-        }
-
         function getParameterByName(name) {
             const url = window.location.href;
             name = name.replace(/[\[\]]/g, '\\$&');
@@ -31,47 +25,39 @@
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
 
-        function getParameters() {
-            const text = getParameterByName("text");
-            const language = getParameterByName("language");
-            return { text, language };
-        }
+        const text = getParameterByName("text");
+        const language = getParameterByName("language");
 
-        const { text, language } = getParameters();
+        document.addEventListener("DOMContentLoaded", function() {
+            if (text) {
+                document.getElementById("output").innerHTML = text; // Display the text
+            } else {
+                document.getElementById("output").innerHTML = "No text provided.";
+            }
+        });
 
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 includedLanguages: language,
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
 
-            const frame = document.querySelector('iframe');
-            if (frame) {
-                frame.onload = function() {
-                    const translateFrame = frame.contentWindow.document;
-                    const selectElement = translateFrame.querySelector('.goog-te-combo');
+            setTimeout(() => {
+                const googleTranslateFrame = document.querySelector('iframe');
+                if (googleTranslateFrame) {
+                    const selectElement = googleTranslateFrame.contentWindow.document.querySelector('.goog-te-combo');
                     if (selectElement) {
                         selectElement.value = language;
                         selectElement.dispatchEvent(new Event('change'));
                     }
-                };
-            }
+                }
+            }, 900);
         }
 
         const googleTranslateScript = document.createElement('script');
         googleTranslateScript.src = `https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit`;
         document.body.appendChild(googleTranslateScript);
-
-        document.addEventListener("DOMContentLoaded", function() {
-            if (text) {
-                document.getElementById("output").innerHTML = text;
-            } else {
-                document.getElementById("output").innerHTML = "undefined";
-                console.error("Parameter Error: No Text parameter.");
-            }
-        });
     </script>
 </body>
 </html>
