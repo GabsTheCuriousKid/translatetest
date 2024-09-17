@@ -21,10 +21,6 @@
             return parameters.has(stringInput);
         }
 
-        function _checkIf() {
-            return _UrlHasParameter("text") && _UrlHasParameter("language");
-        }
-
         function getParameterByName(name) {
             const url = window.location.href;
             name = name.replace(/[\[\]]/g, '\\$&');
@@ -36,12 +32,9 @@
         }
 
         function getParameters() {
-            if (_checkIf()) {
-                const text = getParameterByName("text");
-                const language = getParameterByName("language");
-                return { text, language };
-            }
-            return {};
+            const text = getParameterByName("text");
+            const language = getParameterByName("language");
+            return { text, language };
         }
 
         const { text, language } = getParameters();
@@ -50,12 +43,20 @@
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 includedLanguages: language,
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
             }, 'google_translate_element');
 
-            if (language) {
-                const translate = new google.translate.TranslateElement();
-                translate.translatePage(language);
+            const frame = document.querySelector('iframe');
+            if (frame) {
+                frame.onload = function() {
+                    const translateFrame = frame.contentWindow.document;
+                    const selectElement = translateFrame.querySelector('.goog-te-combo');
+                    if (selectElement) {
+                        selectElement.value = language;
+                        selectElement.dispatchEvent(new Event('change'));
+                    }
+                };
             }
         }
 
