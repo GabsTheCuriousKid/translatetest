@@ -43,17 +43,16 @@
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
 
-            let interval = setInterval(() => {
+            setTimeout(() => {
                 const googleTranslateFrame = document.querySelector('iframe');
                 if (googleTranslateFrame) {
                     const selectElement = googleTranslateFrame.contentWindow.document.querySelector('.goog-te-combo');
                     if (selectElement) {
                         selectElement.value = language;
                         selectElement.dispatchEvent(new Event('change'));
-                        clearInterval(interval);
                     }
                 }
-            }, 500);
+            }, 1000);
         }
 
         const googleTranslateScript = document.createElement('script');
