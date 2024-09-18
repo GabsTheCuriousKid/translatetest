@@ -26,7 +26,8 @@
         }
 
         const text = getParameterByName("text");
-        const language = getParameterByName("language");
+        const language = getParameterByName("language1");
+        const language2 = getParameterByName("language2");
 
         document.addEventListener("DOMContentLoaded", function() {
             if (text) {
@@ -38,7 +39,7 @@
 
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
-                pageLanguage: 'en',
+                pageLanguage: language1,
                 includedLanguages: 'es,fr,de,zh-CN,ja,ru,en',
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
@@ -48,7 +49,7 @@
                 if (googleTranslateFrame) {
                     const selectElement = googleTranslateFrame.contentWindow.document.querySelector('.goog-te-combo');
                     if (selectElement) {
-                        selectElement.value = language;
+                        selectElement.value = language2;
                         selectElement.dispatchEvent(new Event('change'));
                     }
                 }
